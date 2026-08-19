@@ -1,0 +1,1770 @@
+{
+  "name": "Outbound AI Voice Call Orchestration - Portfolio",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Portfolio Demo Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_GID",
+          "mode": "list",
+          "cachedResultName": "Dialer Settings",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=YOUR_SHEET_GID"
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -368,
+        -144
+      ],
+      "id": "51ee7bbf-32c9-4e81-bb43-068134b683e4",
+      "name": "Read Dialer Settings",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Portfolio Demo Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_GID",
+          "mode": "list",
+          "cachedResultName": "Outbound Queue",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=YOUR_SHEET_GID"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Automation Status\n",
+              "lookupValue": "Calling"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -176,
+        -144
+      ],
+      "id": "439f2c46-dd51-4415-88c8-87a54d01ef82",
+      "name": "Read Queue Status",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Portfolio Demo Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_GID",
+          "mode": "list",
+          "cachedResultName": "Outbound Queue",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=YOUR_SHEET_GID"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Call Attempts\n": "={{ Number($json[\"Call Attempts\"] || 0) + 1 }}",
+            "Automation Status\n": "Calling",
+            "Customer ID": "={{ $json[\"Customer ID\"] }}"
+          },
+          "matchingColumns": [
+            "Customer ID"
+          ],
+          "schema": [
+            {
+              "id": "Call Queue Rank",
+              "displayName": "Call Queue Rank",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer ID",
+              "displayName": "Customer ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Customer Phone",
+              "displayName": "Customer Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Score",
+              "displayName": "Call Priority Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Level",
+              "displayName": "Call Priority Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Objective",
+              "displayName": "Call Objective",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Objective Details",
+              "displayName": "Call Objective Details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Package Recommendation Action",
+              "displayName": "Package Recommendation Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Known Package",
+              "displayName": "Last Known Package",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recommended Package",
+              "displayName": "Recommended Package",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recommended Package Price",
+              "displayName": "Recommended Package Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Package Recommendation Reason",
+              "displayName": "Package Recommendation Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Sales Angle",
+              "displayName": "Call Sales Angle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Opening Guidance",
+              "displayName": "Call Opening Guidance",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Return Probability %",
+              "displayName": "Return Probability %",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Return Risk Segment",
+              "displayName": "Return Risk Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer Value Segment",
+              "displayName": "Customer Value Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer Frequency Segment",
+              "displayName": "Customer Frequency Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Inactivity Segment",
+              "displayName": "Inactivity Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Automation Status\n",
+              "displayName": "Automation Status\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Call Attempts\n",
+              "displayName": "Call Attempts\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Call ID\n",
+              "displayName": "Last Call ID\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Call Time",
+              "displayName": "Last Call Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Next Call Time",
+              "displayName": "Next Call Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WhatsApp Requested",
+              "displayName": "WhatsApp Requested",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WhatsApp Status",
+              "displayName": "WhatsApp Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Days Since Last Order",
+              "displayName": "Days Since Last Order",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Total Orders To Date",
+              "displayName": "Total Orders To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Total Spend To Date",
+              "displayName": "Total Spend To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer AOV To Date",
+              "displayName": "Customer AOV To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Orders",
+              "displayName": "Recent 90-Day Orders",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Spend",
+              "displayName": "Recent 90-Day Spend",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Online Orders",
+              "displayName": "Recent 90-Day Online Orders",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent Online Order Ratio",
+              "displayName": "Recent Online Order Ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Covered Laundry Quantity",
+              "displayName": "Recent 90-Day Covered Laundry Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Blanket Quantity",
+              "displayName": "Recent 90-Day Blanket Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Shoe Quantity",
+              "displayName": "Recent 90-Day Shoe Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Reason",
+              "displayName": "Call Priority Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dynamic Call Brief",
+              "displayName": "Dynamic Call Brief",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        16,
+        160
+      ],
+      "id": "7b10b565-f3de-4f40-b781-40d0df3b83d7",
+      "name": "Mark Customer As Calling1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const settings = $('Read Dialer Settings').first().json;\n\n// تجاهل العنصر الفارغ الناتج عن Always Output Data\nconst activeCalls = $input\n  .all()\n  .filter(item => item.json && Object.keys(item.json).length > 0)\n  .length;\n\nconst maxConcurrentCalls = Number(\n  settings['Max Concurrent Calls'] || 0\n);\n\nconst rawDialerEnabled = settings['Dialer Enabled'];\n\nconst dialerEnabled =\n  rawDialerEnabled === true ||\n  rawDialerEnabled === 1 ||\n  ['TRUE', 'YES', '1', 'ON'].includes(\n    String(rawDialerEnabled ?? '').trim().toUpperCase()\n  );\n\nconst availableSlots = dialerEnabled\n  ? Math.max(0, maxConcurrentCalls - activeCalls)\n  : 0;\n\nreturn [\n  {\n    json: {\n      dialer_enabled: dialerEnabled,\n      max_concurrent_calls: maxConcurrentCalls,\n      active_calls: activeCalls,\n      available_slots: availableSlots\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        16,
+        -144
+      ],
+      "id": "78bcb43e-c5ca-47cf-b8b4-acc0443fc49f",
+      "name": "Calculate Available Slots"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Portfolio Demo Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_GID",
+          "mode": "list",
+          "cachedResultName": "Call Results",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=YOUR_SHEET_GID"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "call_date_saudi",
+              "lookupValue": "={{ $now.setZone('Asia/Riyadh').toFormat('yyyy-MM-dd') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -368,
+        16
+      ],
+      "id": "f32a2fb4-c9a6-4479-8663-039d5c76d768",
+      "name": "Read Today Call Results",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const settings = $('Read Dialer Settings').first().json;\nconst slotData = $('Calculate Available Slots').first().json;\n\n// --------------------------------------------------\n// 1) حساب المكالمات المنتهية اليوم\n// --------------------------------------------------\n\n// نتجاهل العنصر الفارغ الناتج عن Always Output Data\nconst finishedCallsToday = $input\n  .all()\n  .filter(\n    item =>\n      item.json &&\n      Object.keys(item.json).length > 0\n  )\n  .length;\n\n\n// --------------------------------------------------\n// 2) قراءة إعدادات الدايالر\n// --------------------------------------------------\n\nconst dailyCallLimit = Number(\n  settings['Daily Call Limit'] || 0\n);\n\nconst activeCalls = Number(\n  slotData.active_calls || 0\n);\n\nconst availableSlots = Number(\n  slotData.available_slots || 0\n);\n\nconst dialerEnabled =\n  slotData.dialer_enabled === true;\n\nconst callingStartTime =\n  settings['Calling Start Time'];\n\nconst callingEndTime =\n  settings['Calling End Time'];\n\n\n// --------------------------------------------------\n// 3) تحويل وقت الشيت إلى عدد دقائق\n// --------------------------------------------------\n\nfunction timeToMinutes(value) {\n  if (value === null || value === undefined || value === '') {\n    return null;\n  }\n\n  // في حال أرجع Google Sheets الوقت كرقم عشري\n  if (typeof value === 'number') {\n    if (value >= 0 && value < 1) {\n      return Math.round(value * 24 * 60) % 1440;\n    }\n  }\n\n  const text = String(value).trim().toUpperCase();\n\n  // يدعم 10:00 و10:00:00 و10:00 AM\n  const match = text.match(\n    /^(\\d{1,2}):(\\d{2})(?::\\d{2})?\\s*(AM|PM)?$/\n  );\n\n  if (!match) {\n    return null;\n  }\n\n  let hours = Number(match[1]);\n  const minutes = Number(match[2]);\n  const period = match[3];\n\n  if (\n    Number.isNaN(hours) ||\n    Number.isNaN(minutes) ||\n    minutes < 0 ||\n    minutes > 59\n  ) {\n    return null;\n  }\n\n  if (period === 'AM' && hours === 12) {\n    hours = 0;\n  }\n\n  if (period === 'PM' && hours < 12) {\n    hours += 12;\n  }\n\n  if (hours < 0 || hours > 23) {\n    return null;\n  }\n\n  return (hours * 60) + minutes;\n}\n\n\n// --------------------------------------------------\n// 4) التحقق من ساعات الاتصال بتوقيت السعودية\n// --------------------------------------------------\n\nconst nowSaudi = $now.setZone('Asia/Riyadh');\n\nconst currentMinutes =\n  (nowSaudi.hour * 60) + nowSaudi.minute;\n\nconst startMinutes =\n  timeToMinutes(callingStartTime);\n\nconst endMinutes =\n  timeToMinutes(callingEndTime);\n\nlet withinCallingHours = false;\n\nif (\n  startMinutes !== null &&\n  endMinutes !== null\n) {\n  if (startMinutes < endMinutes) {\n    // مثال: 10:00 إلى 18:00\n    withinCallingHours =\n      currentMinutes >= startMinutes &&\n      currentMinutes < endMinutes;\n  } else if (startMinutes > endMinutes) {\n    // يدعم وقتًا يعبر منتصف الليل\n    // مثال: 20:00 إلى 02:00\n    withinCallingHours =\n      currentMinutes >= startMinutes ||\n      currentMinutes < endMinutes;\n  } else {\n    // لو وقت البداية والنهاية متساويان\n    // نعتبر الاتصال مسموحًا طوال اليوم\n    withinCallingHours = true;\n  }\n}\n\n\n// --------------------------------------------------\n// 5) حساب الحد اليومي\n// --------------------------------------------------\n\n// مكالمات اليوم = المنتهية اليوم + الشغالة حاليًا\nconst callsStartedToday =\n  finishedCallsToday + activeCalls;\n\nconst remainingDailyCalls = Math.max(\n  0,\n  dailyCallLimit - callsStartedToday\n);\n\n\n// --------------------------------------------------\n// 6) تحديد عدد المكالمات المسموح بدؤها الآن\n// --------------------------------------------------\n\nconst callsToStart =\n  dialerEnabled && withinCallingHours\n    ? Math.max(\n        0,\n        Math.min(\n          availableSlots,\n          remainingDailyCalls\n        )\n      )\n    : 0;\n\n\n// --------------------------------------------------\n// 7) إخراج النتيجة\n// --------------------------------------------------\n\nreturn [\n  {\n    json: {\n      dialer_enabled: dialerEnabled,\n\n      calling_start_time: String(\n        callingStartTime ?? ''\n      ),\n\n      calling_end_time: String(\n        callingEndTime ?? ''\n      ),\n\n      current_time_saudi:\n        nowSaudi.toFormat('HH:mm'),\n\n      within_calling_hours:\n        withinCallingHours,\n\n      max_concurrent_calls: Number(\n        slotData.max_concurrent_calls || 0\n      ),\n\n      active_calls: activeCalls,\n      available_slots: availableSlots,\n\n      daily_call_limit: dailyCallLimit,\n      finished_calls_today: finishedCallsToday,\n      calls_started_today: callsStartedToday,\n      remaining_daily_calls: remainingDailyCalls,\n\n      calls_to_start: callsToStart\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -176,
+        16
+      ],
+      "id": "5a8b5354-3ffb-4749-8ffc-c9cd511491d8",
+      "name": "Calculate Dialer Capacity"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "575c567b-7e00-4f1d-9b6a-fa3a15e05adc",
+              "leftValue": "={{ $json.calls_to_start }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        16,
+        16
+      ],
+      "id": "84d73dcf-8344-42c7-b963-82bfdc4cb6a6",
+      "name": "Can Start Calls?"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Portfolio Demo Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_GID",
+          "mode": "list",
+          "cachedResultName": "Outbound Queue",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=YOUR_SHEET_GID"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Automation Status\n",
+              "lookupValue": "Pending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -368,
+        160
+      ],
+      "id": "dcedc400-2953-4fa9-a28a-147f8baa6f6b",
+      "name": "Get Pending Customers",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxItems": "={{ $('Calculate Dialer Capacity').first().json.calls_to_start }}"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        160
+      ],
+      "id": "6e9a4306-5cd5-4afa-ad1c-d76e3d301947",
+      "name": "Limit Customers to Call"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from_number\": \"+15550000000\",\n  \"to_number\": \"{{ '+' + String($('Limit Customers to Call').item.json['Customer Phone']).replace(/\\\\D/g, '') }}\",\n  \"metadata\": {\n    \"customer_id\": \"{{ String($('Limit Customers to Call').item.json['Customer ID']) }}\",\n    \"customer_phone\": \"{{ '+' + String($('Limit Customers to Call').item.json['Customer Phone']).replace(/\\\\D/g, '') }}\",\n    \"call_queue_rank\": \"{{ String($('Limit Customers to Call').item.json['Call Queue Rank']) }}\"\n  },\n  \"retell_llm_dynamic_variables\": {\n    \"customer_id\": \"{{ String($('Limit Customers to Call').item.json['Customer ID']) }}\",\n    \"customer_phone\": \"{{ '+' + String($('Limit Customers to Call').item.json['Customer Phone']).replace(/\\\\D/g, '') }}\",\n    \"call_objective\": \"{{ String($('Limit Customers to Call').item.json['Call Objective']) }}\",\n    \"recommended_package\": \"{{ String($('Limit Customers to Call').item.json['Recommended Package']) }}\",\n    \"package_reason\": \"{{ String($('Limit Customers to Call').item.json['Package Recommendation Reason']) }}\",\n    \"sales_angle\": \"{{ String($('Limit Customers to Call').item.json['Call Sales Angle']) }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        224,
+        160
+      ],
+      "id": "da6ea860-5dbb-46b8-861b-4c6451135c71",
+      "name": "Create Retell Call",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_RETELL_CREDENTIAL_ID",
+          "name": "YOUR_RETELL_API_CREDENTIAL"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Portfolio Demo Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_GID",
+          "mode": "list",
+          "cachedResultName": "Outbound Queue",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=YOUR_SHEET_GID"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Customer ID": "={{ $json.metadata.customer_id }}",
+            "Last Call ID\n": "={{ $json.call_id }}",
+            "Last Call Time": "={{ $now.setZone('Asia/Riyadh').toFormat('yyyy-MM-dd HH:mm:ss') }}"
+          },
+          "matchingColumns": [
+            "Customer ID"
+          ],
+          "schema": [
+            {
+              "id": "Call Queue Rank",
+              "displayName": "Call Queue Rank",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer ID",
+              "displayName": "Customer ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Customer Phone",
+              "displayName": "Customer Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Score",
+              "displayName": "Call Priority Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Level",
+              "displayName": "Call Priority Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Objective",
+              "displayName": "Call Objective",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Objective Details",
+              "displayName": "Call Objective Details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Package Recommendation Action",
+              "displayName": "Package Recommendation Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Known Package",
+              "displayName": "Last Known Package",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recommended Package",
+              "displayName": "Recommended Package",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recommended Package Price",
+              "displayName": "Recommended Package Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Package Recommendation Reason",
+              "displayName": "Package Recommendation Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Sales Angle",
+              "displayName": "Call Sales Angle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Opening Guidance",
+              "displayName": "Call Opening Guidance",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Return Probability %",
+              "displayName": "Return Probability %",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Return Risk Segment",
+              "displayName": "Return Risk Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer Value Segment",
+              "displayName": "Customer Value Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer Frequency Segment",
+              "displayName": "Customer Frequency Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Inactivity Segment",
+              "displayName": "Inactivity Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Automation Status\n",
+              "displayName": "Automation Status\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Attempts\n",
+              "displayName": "Call Attempts\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Call ID\n",
+              "displayName": "Last Call ID\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Call Time",
+              "displayName": "Last Call Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Next Call Time",
+              "displayName": "Next Call Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WhatsApp Requested",
+              "displayName": "WhatsApp Requested",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WhatsApp Status",
+              "displayName": "WhatsApp Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Days Since Last Order",
+              "displayName": "Days Since Last Order",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Total Orders To Date",
+              "displayName": "Total Orders To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Total Spend To Date",
+              "displayName": "Total Spend To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer AOV To Date",
+              "displayName": "Customer AOV To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Orders",
+              "displayName": "Recent 90-Day Orders",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Spend",
+              "displayName": "Recent 90-Day Spend",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Online Orders",
+              "displayName": "Recent 90-Day Online Orders",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent Online Order Ratio",
+              "displayName": "Recent Online Order Ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Covered Laundry Quantity",
+              "displayName": "Recent 90-Day Covered Laundry Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Blanket Quantity",
+              "displayName": "Recent 90-Day Blanket Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Shoe Quantity",
+              "displayName": "Recent 90-Day Shoe Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Reason",
+              "displayName": "Call Priority Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dynamic Call Brief",
+              "displayName": "Dynamic Call Brief",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        16
+      ],
+      "id": "eea8f854-76da-49c0-bfe4-f03bd79d018c",
+      "name": "Save Created Call.",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Portfolio Demo Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_GID",
+          "mode": "list",
+          "cachedResultName": "Outbound Queue",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=YOUR_SHEET_GID"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Customer ID": "={{ $('Limit Customers to Call').item.json['Customer ID'] }}",
+            "Automation Status\n": "Call Failed"
+          },
+          "matchingColumns": [
+            "Customer ID"
+          ],
+          "schema": [
+            {
+              "id": "Call Queue Rank",
+              "displayName": "Call Queue Rank",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer ID",
+              "displayName": "Customer ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Customer Phone",
+              "displayName": "Customer Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Score",
+              "displayName": "Call Priority Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Level",
+              "displayName": "Call Priority Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Objective",
+              "displayName": "Call Objective",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Objective Details",
+              "displayName": "Call Objective Details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Package Recommendation Action",
+              "displayName": "Package Recommendation Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Known Package",
+              "displayName": "Last Known Package",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recommended Package",
+              "displayName": "Recommended Package",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recommended Package Price",
+              "displayName": "Recommended Package Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Package Recommendation Reason",
+              "displayName": "Package Recommendation Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Sales Angle",
+              "displayName": "Call Sales Angle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Opening Guidance",
+              "displayName": "Call Opening Guidance",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Return Probability %",
+              "displayName": "Return Probability %",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Return Risk Segment",
+              "displayName": "Return Risk Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer Value Segment",
+              "displayName": "Customer Value Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer Frequency Segment",
+              "displayName": "Customer Frequency Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Inactivity Segment",
+              "displayName": "Inactivity Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Automation Status\n",
+              "displayName": "Automation Status\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Call Attempts\n",
+              "displayName": "Call Attempts\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Call ID\n",
+              "displayName": "Last Call ID\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Call Time",
+              "displayName": "Last Call Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Next Call Time",
+              "displayName": "Next Call Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WhatsApp Requested",
+              "displayName": "WhatsApp Requested",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WhatsApp Status",
+              "displayName": "WhatsApp Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Days Since Last Order",
+              "displayName": "Days Since Last Order",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Total Orders To Date",
+              "displayName": "Total Orders To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Total Spend To Date",
+              "displayName": "Total Spend To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer AOV To Date",
+              "displayName": "Customer AOV To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Orders",
+              "displayName": "Recent 90-Day Orders",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Spend",
+              "displayName": "Recent 90-Day Spend",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Online Orders",
+              "displayName": "Recent 90-Day Online Orders",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent Online Order Ratio",
+              "displayName": "Recent Online Order Ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Covered Laundry Quantity",
+              "displayName": "Recent 90-Day Covered Laundry Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Blanket Quantity",
+              "displayName": "Recent 90-Day Blanket Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Shoe Quantity",
+              "displayName": "Recent 90-Day Shoe Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Reason",
+              "displayName": "Call Priority Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dynamic Call Brief",
+              "displayName": "Dynamic Call Brief",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        304
+      ],
+      "id": "2be25c7d-8a66-438c-87f9-6ea302134136",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -592,
+        -144
+      ],
+      "id": "977a823a-9790-42cb-865f-efae16dfb855",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Read Dialer Settings": {
+      "main": [
+        [
+          {
+            "node": "Read Queue Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Customer As Calling1": {
+      "main": [
+        [
+          {
+            "node": "Create Retell Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Queue Status": {
+      "main": [
+        [
+          {
+            "node": "Calculate Available Slots",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Available Slots": {
+      "main": [
+        [
+          {
+            "node": "Read Today Call Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Today Call Results": {
+      "main": [
+        [
+          {
+            "node": "Calculate Dialer Capacity",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Dialer Capacity": {
+      "main": [
+        [
+          {
+            "node": "Can Start Calls?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Can Start Calls?": {
+      "main": [
+        [
+          {
+            "node": "Get Pending Customers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Pending Customers": {
+      "main": [
+        [
+          {
+            "node": "Limit Customers to Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit Customers to Call": {
+      "main": [
+        [
+          {
+            "node": "Mark Customer As Calling1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Retell Call": {
+      "main": [
+        [
+          {
+            "node": "Save Created Call.",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Dialer Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}

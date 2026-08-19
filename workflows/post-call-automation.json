@@ -1,0 +1,1335 @@
+{
+  "name": "Post-Call Analysis & WhatsApp Follow-Up - Portfolio",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "templateMessage",
+        "templateName": "demo_package_a_template",
+        "broadcastName": "package_a",
+        "whatsappNumber": "966500000000"
+      },
+      "type": "n8n-nodes-wati.wati",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        -224
+      ],
+      "id": "26f19597-YOUR_GOOGLE_SHEET_ID",
+      "name": "Package A",
+      "credentials": {
+        "watiApi": {
+          "id": "YOUR_WATI_CREDENTIAL_ID",
+          "name": "YOUR_WATI_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "templateMessage",
+        "templateName": "demo_package_b_template",
+        "broadcastName": "package_b",
+        "whatsappNumber": "966500000000"
+      },
+      "type": "n8n-nodes-wati.wati",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        -48
+      ],
+      "id": "4d0e33c5-9227-4ade-a9c5-c6fea51933cd",
+      "name": "Package B",
+      "credentials": {
+        "watiApi": {
+          "id": "YOUR_WATI_CREDENTIAL_ID",
+          "name": "YOUR_WATI_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "templateMessage",
+        "templateName": "demo_package_c_template",
+        "broadcastName": "package_c",
+        "whatsappNumber": "966500000000"
+      },
+      "type": "n8n-nodes-wati.wati",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        128
+      ],
+      "id": "28bc5c56-c58b-4958-9490-4e8554f7415c",
+      "name": "Package C",
+      "credentials": {
+        "watiApi": {
+          "id": "YOUR_WATI_CREDENTIAL_ID",
+          "name": "YOUR_WATI_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "retell-call-analyzed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -128,
+        -16
+      ],
+      "id": "343d3ac7-8aa4-4df4-9d0d-da7c7411ac9c",
+      "name": "Webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0b02c1b9-9dbe-4f9e-8623-a6000b461e1c",
+              "leftValue": "={{ $json.body.event }}",
+              "rightValue": "call_analyzed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        96,
+        -16
+      ],
+      "id": "951af6c4-736b-4764-91cf-94d3b6d4a412",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8e44946c-6b15-4246-87d2-f2ce56208343",
+              "name": "event",
+              "value": "={{ $json.body.event ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "043855f4-0fa9-401c-a614-d3ce4d9229d2",
+              "name": "call_id",
+              "value": "={{ $json.body.call.call_id }}",
+              "type": "string"
+            },
+            {
+              "id": "YOUR_GOOGLE_SHEET_ID",
+              "name": "customer_id",
+              "value": "={{ $json.body.call.metadata?.customer_id ?? $json.body.call.retell_llm_dynamic_variables?.customer_id ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "3c9786a3-a43c-4af8-bd5f-4ea14f51d539",
+              "name": "customer_phone",
+              "value": "={{ $json.body.call.to_number ?? $json.body.call.retell_llm_dynamic_variables?.customer_phone ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "fda29ab0-ae38-4662-b4ba-ebc772f491b2",
+              "name": "selected_package",
+              "value": "={{ $json.body.call.call_analysis.custom_analysis_data.selected_package }}",
+              "type": "string"
+            },
+            {
+              "id": "74be5c81-YOUR_GOOGLE_SHEET_ID",
+              "name": "agent_id",
+              "value": "={{ $json.body.call.agent_id ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "03919e46-e52e-4122-a556-4a83d928cba4",
+              "name": "agent_name",
+              "value": "={{ $json.body.call.agent_name ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "81da3c99-e488-492b-8c06-1e71815addd0",
+              "name": "call_type",
+              "value": "={{ $json.body.call.call_type ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "YOUR_GOOGLE_SHEET_ID",
+              "name": "call_status",
+              "value": "={{ $json.body.call.call_status ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "24cf03bf-bb42-43cb-b7bb-74c9fe3b3167",
+              "name": "disconnection_reason",
+              "value": "={{ $json.body.call.disconnection_reason ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "c7671760-2f52-4800-8bb2-814a4d88786d",
+              "name": "call_objective",
+              "value": "={{ $json.body.call.retell_llm_dynamic_variables?.call_objective ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "dd39d3bd-8d45-4e42-b730-3321fbb6d149",
+              "name": "recommended_package",
+              "value": "={{ $json.body.call.retell_llm_dynamic_variables?.recommended_package ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "310947df-8a65-458c-8f8a-628980672316",
+              "name": "package_reason",
+              "value": "={{ $json.body.call.retell_llm_dynamic_variables?.package_reason ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "80e18cd3-3c8b-4db4-ae7d-1c9feb34ad9e",
+              "name": "sales_angle",
+              "value": "={{ $json.body.call.retell_llm_dynamic_variables?.sales_angle ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "b5d810a4-9f3a-43bf-8761-fb17e6bf5bf2",
+              "name": "call_outcome",
+              "value": "={{ $json.body.call.call_analysis.custom_analysis_data.call_outcome }}",
+              "type": "string"
+            },
+            {
+              "id": "2912f0c0-da58-4e26-b922-b9fef27266f6",
+              "name": "selected_package",
+              "value": "={{ $json.body.call.call_analysis?.custom_analysis_data?.selected_package ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "YOUR_GOOGLE_SHEET_ID",
+              "name": "callback_time",
+              "value": "={{ $json.body.call.call_analysis?.custom_analysis_data?.callback_time ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "YOUR_GOOGLE_SHEET_ID",
+              "name": "rejection_reason",
+              "value": "={{ $json.body.call.call_analysis?.custom_analysis_data?.rejection_reason ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "b798eceb-5a57-41e1-9e30-591191f66d95",
+              "name": "call_summary",
+              "value": "={{ $json.body.call.call_analysis?.call_summary ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "cd88e916-0e58-4557-9224-fec2a00953e4",
+              "name": "user_sentiment",
+              "value": "={{ $json.body.call.call_analysis?.user_sentiment ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "09ec79f1-0c89-4bb5-9988-343501822250",
+              "name": "retell_call_successful",
+              "value": "={{ $json.body.call.call_analysis?.call_successful ?? false }}",
+              "type": "string"
+            },
+            {
+              "id": "YOUR_GOOGLE_SHEET_ID",
+              "name": "in_voicemail",
+              "value": "={{ $json.body.call.call_analysis?.in_voicemail ?? false }}",
+              "type": "string"
+            },
+            {
+              "id": "2e1a0b67-2ace-4078-8052-e9c81d6620c0",
+              "name": "start_time_saudi",
+              "value": "={{ $json.body.call.start_timestamp ? DateTime.fromMillis($json.body.call.start_timestamp).setZone('Asia/Riyadh').toFormat('yyyy-LL-dd HH:mm:ss') : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "9732cb0e-d062-4ef8-bcdc-6bb9ff30e297",
+              "name": "end_time_saudi",
+              "value": "={{ $json.body.call.end_timestamp ? DateTime.fromMillis($json.body.call.end_timestamp).setZone('Asia/Riyadh').toFormat('yyyy-LL-dd HH:mm:ss') : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "2adea7fd-06e6-4841-9767-1380c156a2a1",
+              "name": "duration_seconds",
+              "value": "={{ Math.round(($json.body.call.duration_ms ?? 0) / 1000) }}",
+              "type": "string"
+            },
+            {
+              "id": "9e93645b-7a3c-4f39-86cd-62de73a13f30",
+              "name": "recording_url",
+              "value": "={{ $json.body.call.recording_url ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "fe9b4cf9-875b-441c-87fa-c6b06b7b7e58",
+              "name": "transcript",
+              "value": "={{ $json.body.call.transcript ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "ec36e651-bcc0-40de-baca-30ed6cc88e92",
+              "name": "whatsapp_requested",
+              "value": "={{ $json.body.call.call_analysis.custom_analysis_data.whatsapp_requested ?? false }}",
+              "type": "boolean"
+            },
+            {
+              "id": "908a2613-c8b8-46f7-9a05-f7220849e413",
+              "name": "whatsapp_package",
+              "value": "={{ $json.body.call.call_analysis.custom_analysis_data.whatsapp_package ?? 'no_package_requested' }}",
+              "type": "string"
+            },
+            {
+              "id": "ec11547b-3d50-47e9-98b6-089dd13d8780",
+              "name": "retell_combined_cost",
+              "value": "={{ $json.body.call.call_cost?.combined_cost ?? 0 }}",
+              "type": "string"
+            },
+            {
+              "id": "2b4d8798-b8a6-46b9-b824-b3f854829bd3",
+              "name": "billed_duration_seconds",
+              "value": "={{ $json.body.call.call_cost?.total_duration_seconds ?? 0 }}",
+              "type": "string"
+            },
+            {
+              "id": "a6a03ce3-7046-4136-8911-1fc668fc6f0d",
+              "name": "target_package",
+              "value": "={{   $json.body.call.call_analysis.custom_analysis_data.selected_package &&   $json.body.call.call_analysis.custom_analysis_data.selected_package !== 'no_package_selected'     ? $json.body.call.call_analysis.custom_analysis_data.selected_package     : (         $json.body.call.call_analysis.custom_analysis_data.whatsapp_package         ?? 'no_package_requested'       ) }}",
+              "type": "string"
+            },
+            {
+              "id": "546eb30f-07c6-4380-a7c5-62952a80d745",
+              "name": "should_send_whatsapp",
+              "value": "={{\n  Boolean(\n    (\n      $json.body?.call?.call_analysis?.custom_analysis_data?.selected_package\n      &&\n      $json.body.call.call_analysis.custom_analysis_data.selected_package\n        !== 'no_package_selected'\n    )\n    ||\n    (\n      (\n        $json.body?.call?.call_analysis?.custom_analysis_data?.whatsapp_requested\n          === true\n        ||\n        $json.body?.call?.call_analysis?.custom_analysis_data?.whatsapp_requested\n          === 'true'\n      )\n      &&\n      (\n        $json.body?.call?.call_analysis?.custom_analysis_data?.whatsapp_package\n        ?? 'no_package_requested'\n      ) !== 'no_package_requested'\n    )\n  )\n}}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        -32
+      ],
+      "id": "35b90a74-fae8-4206-8de7-55835a5fb862",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Portfolio Demo Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_GID",
+          "mode": "list",
+          "cachedResultName": "Call Results",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=YOUR_SHEET_GID"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "event": "={{ $json.event }}",
+            "call_id": "={{ $json.call_id }}",
+            "customer_id": "={{ $json.customer_id }}",
+            "customer_phone": "={{ $json.customer_phone }}",
+            "agent_id": "={{ $json.agent_id }}",
+            "selected_package": "={{ $json.selected_package }}",
+            "agent_name": "={{ $json.agent_name }}",
+            "call_type": "={{ $json.call_type }}",
+            "call_status": "={{ $json.call_status }}",
+            "disconnection_reason": "={{ $json.disconnection_reason }}",
+            "call_objective": "={{ $json.call_objective }}",
+            "recommended_package": "={{ $json.recommended_package }}",
+            "package_reason": "={{ $json.package_reason }}",
+            "sales_angle": "={{ $json.sales_angle }}",
+            "call_outcome": "={{ $json.call_outcome }}",
+            "callback_time": "={{ $json.callback_time }}",
+            "rejection_reason": "={{ $json.rejection_reason }}",
+            "call_summary": "={{ $json.call_summary }}",
+            "user_sentiment": "={{ $json.user_sentiment }}",
+            "retell_call_successful": "={{ $json.retell_call_successful }}",
+            "in_voicemail": "={{ $json.in_voicemail }}",
+            "start_time_saudi": "={{ $json.start_time_saudi }}",
+            "end_time_saudi": "={{ $json.end_time_saudi }}",
+            "duration_seconds": "={{ $json.duration_seconds }}",
+            "recording_url": "={{ $json.recording_url }}",
+            "transcript": "={{ $json.transcript }}",
+            "retell_combined_cost": "={{ $json.retell_combined_cost }}",
+            "billed_duration_seconds": "={{ $json.billed_duration_seconds }}",
+            "call_date_saudi": "={{ String($json.start_time_saudi || '').slice(0, 10) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "event",
+              "displayName": "event",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "call_id",
+              "displayName": "call_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "customer_id",
+              "displayName": "customer_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "customer_phone",
+              "displayName": "customer_phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agent_id",
+              "displayName": "agent_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agent_name",
+              "displayName": "agent_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "call_type",
+              "displayName": "call_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "call_status",
+              "displayName": "call_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "disconnection_reason",
+              "displayName": "disconnection_reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "call_objective",
+              "displayName": "call_objective",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recommended_package",
+              "displayName": "recommended_package",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "package_reason",
+              "displayName": "package_reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sales_angle",
+              "displayName": "sales_angle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "call_outcome",
+              "displayName": "call_outcome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "selected_package",
+              "displayName": "selected_package",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "callback_time",
+              "displayName": "callback_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "rejection_reason",
+              "displayName": "rejection_reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "call_summary",
+              "displayName": "call_summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "user_sentiment",
+              "displayName": "user_sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "retell_call_successful",
+              "displayName": "retell_call_successful",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "in_voicemail",
+              "displayName": "in_voicemail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "start_time_saudi",
+              "displayName": "start_time_saudi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "end_time_saudi",
+              "displayName": "end_time_saudi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "call_date_saudi",
+              "displayName": "call_date_saudi",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "duration_seconds",
+              "displayName": "duration_seconds",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recording_url",
+              "displayName": "recording_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "transcript",
+              "displayName": "transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "retell_combined_cost",
+              "displayName": "retell_combined_cost",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "billed_duration_seconds",
+              "displayName": "billed_duration_seconds",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        128
+      ],
+      "id": "02259997-e424-4164-b7f2-d8f265f846e5",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "Portfolio Demo Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "YOUR_SHEET_GID",
+          "mode": "list",
+          "cachedResultName": "Outbound Queue",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=YOUR_SHEET_GID"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Last Call ID\n": "={{ $json.call_id }}",
+            "Automation Status\n": "={{\n  $json.callback_time\n    ? 'Callback'\n    : $json.call_outcome === 'declined'\n      ? 'Do Not Call'\n      : (\n          $json.call_outcome === 'interested_needs_followup' ||\n          $json.call_outcome === 'subscribed'\n        )\n        ? 'Completed'\n        : (\n            $json.in_voicemail === true ||\n            $json.in_voicemail === 'true'\n          )\n          ? 'Failed'\n          : 'Completed'\n}}",
+            "WhatsApp Requested": "={{ $json.whatsapp_requested === true }}",
+            "WhatsApp Status": "={{   $json.whatsapp_requested === true     ? 'Pending Template Send'     : 'Not Requested' }}"
+          },
+          "matchingColumns": [
+            "Last Call ID\n"
+          ],
+          "schema": [
+            {
+              "id": "Call Queue Rank",
+              "displayName": "Call Queue Rank",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer ID",
+              "displayName": "Customer ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer Phone",
+              "displayName": "Customer Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Score",
+              "displayName": "Call Priority Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Level",
+              "displayName": "Call Priority Level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Objective",
+              "displayName": "Call Objective",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Objective Details",
+              "displayName": "Call Objective Details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Package Recommendation Action",
+              "displayName": "Package Recommendation Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Known Package",
+              "displayName": "Last Known Package",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recommended Package",
+              "displayName": "Recommended Package",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recommended Package Price",
+              "displayName": "Recommended Package Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Package Recommendation Reason",
+              "displayName": "Package Recommendation Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Sales Angle",
+              "displayName": "Call Sales Angle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Opening Guidance",
+              "displayName": "Call Opening Guidance",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Return Probability %",
+              "displayName": "Return Probability %",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Return Risk Segment",
+              "displayName": "Return Risk Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer Value Segment",
+              "displayName": "Customer Value Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer Frequency Segment",
+              "displayName": "Customer Frequency Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Inactivity Segment",
+              "displayName": "Inactivity Segment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Automation Status\n",
+              "displayName": "Automation Status\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Call Attempts\n",
+              "displayName": "Call Attempts\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Call ID\n",
+              "displayName": "Last Call ID\n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Call Time",
+              "displayName": "Last Call Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Next Call Time",
+              "displayName": "Next Call Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WhatsApp Requested",
+              "displayName": "WhatsApp Requested",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "WhatsApp Status",
+              "displayName": "WhatsApp Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Days Since Last Order",
+              "displayName": "Days Since Last Order",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Total Orders To Date",
+              "displayName": "Total Orders To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Total Spend To Date",
+              "displayName": "Total Spend To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Customer AOV To Date",
+              "displayName": "Customer AOV To Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Orders",
+              "displayName": "Recent 90-Day Orders",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Spend",
+              "displayName": "Recent 90-Day Spend",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Online Orders",
+              "displayName": "Recent 90-Day Online Orders",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent Online Order Ratio",
+              "displayName": "Recent Online Order Ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Covered Laundry Quantity",
+              "displayName": "Recent 90-Day Covered Laundry Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Blanket Quantity",
+              "displayName": "Recent 90-Day Blanket Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Recent 90-Day Shoe Quantity",
+              "displayName": "Recent 90-Day Shoe Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Call Priority Reason",
+              "displayName": "Call Priority Reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dynamic Call Brief",
+              "displayName": "Dynamic Call Brief",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        -208
+      ],
+      "id": "ff945194-9710-4c93-a0e1-f7bd00aa6ee3",
+      "name": "Update Outbound Queue Result",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "YOUR_GOOGLE_SHEETS_CREDENTIAL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d6f0acd5-YOUR_GOOGLE_SHEET_ID",
+              "leftValue": "={{ $json.should_send_whatsapp }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        -32
+      ],
+      "id": "e3bdc725-fc13-482d-8201-248f801c001b",
+      "name": "Should Send WhatsApp?"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.target_package }}",
+                    "rightValue": "package_a",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    },
+                    "id": "9f232bb8-0d1f-4d47-87c0-7bb65310a217"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "199"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c075ce09-863c-4bf2-91ec-7b8c6ffa9879",
+                    "leftValue": "={{ $json.target_package }}",
+                    "rightValue": "package_b",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "299"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "6353e2ac-0548-4d08-9445-a6ebdc2f2f40",
+                    "leftValue": "={{ $json.target_package }}",
+                    "rightValue": "package_c",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "399"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1008,
+        -64
+      ],
+      "id": "888ac64b-a734-4555-8b74-1b8e8dc4da61",
+      "name": "Route WhatsApp Package"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Outbound Queue Result",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Should Send WhatsApp?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Should Send WhatsApp?": {
+      "main": [
+        [
+          {
+            "node": "Route WhatsApp Package",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route WhatsApp Package": {
+      "main": [
+        [
+          {
+            "node": "Package A",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Package B",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Package C",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}
